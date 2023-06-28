@@ -1,0 +1,346 @@
+#include "as5600.h"
+#include "iic_bsp.h"
+#include "cmsis_os.h"
+#include "task_user.h"
+
+/**
+ * @brief       初始化IIC接口
+ * @param       无
+ * @retval      无
+ */
+void as5600_init(void)
+{
+    iic1_init();
+    iic2_init();
+    iic3_init();
+    iic4_init();
+}
+
+/**
+ * @brief       在IIC1挂载的AS5600中读出一个数据
+ * @param       addr: 读数的地址
+ * @retval      读到的数据
+ */
+uint8_t as5600_read_one_byte_1(uint8_t addr)
+{
+    uint8_t temp = 0;
+    iic1_start();    /* 发送起始信号 */
+
+    iic1_send_byte(as5600_addr<<1);
+    iic1_wait_ack();
+    iic1_send_byte(addr);
+    iic1_wait_ack();
+
+    iic1_start();
+    iic1_send_byte((as5600_addr<<1)+1);//读1写0
+    iic1_wait_ack();
+    temp = iic1_read_byte(0); /* 发送nACK */
+    iic1_stop();
+
+    return temp;
+}
+/**
+ * @brief       在IIC2挂载的AS5600中读出一个数据
+ * @param       addr: 读数的地址
+ * @retval      读到的数据
+ */
+uint8_t as5600_read_one_byte_2(uint8_t addr)
+{
+    uint8_t temp = 0;
+    iic2_start();    /* 发送起始信号 */
+
+    iic2_send_byte(as5600_addr<<1);
+    iic2_wait_ack();
+    iic2_send_byte(addr);
+    iic2_wait_ack();
+
+    iic2_start();
+    iic2_send_byte((as5600_addr<<1)+1);//读1写0
+    iic2_wait_ack();
+    temp = iic1_read_byte(0); /* 发送nACK */
+    iic2_stop();
+
+    return temp;
+}
+/**
+ * @brief       在IIC3挂载的AS5600中读出一个数据
+ * @param       addr: 读数的地址
+ * @retval      读到的数据
+ */
+uint8_t as5600_read_one_byte_3(uint8_t addr)
+{
+    uint8_t temp = 0;
+    iic3_start();    /* 发送起始信号 */
+
+    iic3_send_byte(as5600_addr<<1);
+    iic3_wait_ack();
+    iic3_send_byte(addr);
+    iic3_wait_ack();
+
+    iic3_start();
+    iic3_send_byte((as5600_addr<<1)+1);//读1写0
+    iic3_wait_ack();
+    temp = iic1_read_byte(0); /* 发送nACK */
+    iic3_stop();
+
+    return temp;
+}
+/**
+ * @brief       在IIC4挂载的AS5600中读出一个数据
+ * @param       addr: 读数的地址
+ * @retval      读到的数据
+ */
+uint8_t as5600_read_one_byte_4(uint8_t addr)
+{
+    uint8_t temp = 0;
+    iic4_start();    /* 发送起始信号 */
+
+    iic4_send_byte(as5600_addr<<1);
+    iic4_wait_ack();
+    iic4_send_byte(addr);
+    iic4_wait_ack();
+
+    iic4_start();
+    iic4_send_byte((as5600_addr<<1)+1);//读1写0
+    iic4_wait_ack();
+    temp = iic1_read_byte(0); /* 发送nACK */
+    iic4_stop();
+
+    return temp;
+}
+/**
+ * @brief       在IIC1挂载的AS5600中读出角度值
+ * @param       none
+ * @retval      读到的数据
+ */
+uint8_t dh=0,dl=0;
+uint16_t as5600_read_raw_angle_1(void)
+{
+    iic1_start();
+    iic1_send_byte(as5600_addr<<1);
+    iic1_wait_ack();
+    iic1_send_byte(raw_angle_Hi);
+    iic1_wait_ack();
+
+    iic1_start();
+    iic1_send_byte((as5600_addr<<1)+1);//读1写0
+    iic1_wait_ack();
+
+    dh=iic1_read_byte(1);   //1-ack for next byte
+    dl=iic1_read_byte(0);   //0-end trans
+    iic1_stop();
+
+    return ((dh<<8)+dl);
+}
+/**
+ * @brief       在IIC2挂载的AS5600中读出角度值
+ * @param       none
+ * @retval      读到的数据
+ */
+uint16_t as5600_read_raw_angle_2(void)
+{
+    uint8_t dh=0,dl=0;
+
+    iic2_start();
+    iic2_send_byte(as5600_addr<<1);
+    iic2_wait_ack();
+    iic2_send_byte(raw_angle_Hi);
+    iic2_wait_ack();
+
+    iic2_start();
+    iic2_send_byte((as5600_addr<<1)+1);//读1写0
+    iic2_wait_ack();
+
+    dh=iic2_read_byte(1);   //1-ack for next byte
+    dl=iic2_read_byte(0);   //0-end trans
+    iic2_stop();
+
+    return ((dh<<8)+dl);
+}
+/**
+ * @brief       在IIC3挂载的AS5600中读出角度值
+ * @param       none
+ * @retval      读到的数据
+ */
+uint16_t as5600_read_raw_angle_3(void)
+{
+    uint8_t dh=0,dl=0;
+
+    iic3_start();
+    iic3_send_byte(as5600_addr<<1);
+    iic3_wait_ack();
+    iic3_send_byte(raw_angle_Hi);
+    iic3_wait_ack();
+
+    iic3_start();
+    iic3_send_byte((as5600_addr<<1)+1);//读1写0
+    iic3_wait_ack();
+
+    dh=iic3_read_byte(1);   //1-ack for next byte
+    dl=iic3_read_byte(0);   //0-end trans
+    iic3_stop();
+
+    return ((dh<<8)+dl);
+}
+/**
+ * @brief       在IIC4挂载的AS5600中读出角度值
+ * @param       none
+ * @retval      读到的数据
+ */
+uint16_t as5600_read_raw_angle_4(void)
+{
+    uint8_t dh=0,dl=0;
+
+    iic4_start();
+    iic4_send_byte(as5600_addr<<1);
+    iic4_wait_ack();
+    iic4_send_byte(raw_angle_Hi);
+    iic4_wait_ack();
+
+    iic4_start();
+    iic4_send_byte((as5600_addr<<1)+1);//读1写0
+    iic4_wait_ack();
+
+    dh=iic4_read_byte(1);   //1-ack for next byte
+    dl=iic4_read_byte(0);   //0-end trans
+    iic4_stop();
+
+    return ((dh<<8)+dl);
+}
+
+
+/**
+ * @brief       计算角度值
+ * @param       none
+ * @retval      角度值
+ */
+//SysTick:从 RELOAD 寄存器中自动重装载定时初值(168000) 倒计数定时器
+float getVel_iic1(float angle)
+{
+    unsigned long now_us,pre_us;
+    float Ts, angle_c,angle_pre, vel;//Ts：间隔时间
+
+    now_us = SysTick->VAL; //获取当前滴答定时器内的计数值
+    if(now_us < pre_us)//正常情况，，，？
+    {
+        Ts = pre_us - now_us;
+        //可参考的另外一种写法：
+        //Ts = (float)(pre_us - now_us)/12*1e-6;
+    }
+    else
+    {
+        Ts = 168000 - now_us + pre_us;
+        //Ts = (float)(168000 - now_us + pre_us)/12*1e-6;
+    }
+    if(Ts == 0)
+    {
+        Ts = 168000;
+        //Ts = (float)168000/12*1e-6;
+    }
+    angle_c =  angle;
+    vel = (angle_c - angle_pre)/Ts;
+
+    angle_pre = angle_c;
+    pre_us = now_us;
+
+    return vel;
+}
+
+/**
+ * @brief       计算角度值
+ * @param       none
+ * @retval      角度值
+ */
+float getVel_iic2(float angle)
+{
+    unsigned long now_us,pre_us;
+    float Ts, angle_c,angle_pre, vel;//Ts：间隔时间
+
+    now_us = SysTick->VAL; //获取当前滴答定时器内的计数值
+    if(now_us < pre_us)//正常情况，，，？
+    {
+        Ts = pre_us - now_us;
+    }
+    else
+    {
+        Ts = 168000 - now_us + pre_us;
+    }
+    if(Ts == 0)
+    {
+        Ts = 168000;
+    }
+
+    angle_c =  angle;
+    vel = (angle_c - angle_pre)/Ts;
+
+    angle_pre = angle_c;
+    pre_us = now_us;
+
+    return vel;
+}
+
+/**
+ * @brief       计算角度值
+ * @param       none
+ * @retval      角度值
+ */
+float getVel_iic3(float angle)
+{
+    unsigned long now_us,pre_us;
+    float Ts, angle_c,angle_pre, vel;//Ts：间隔时间
+
+    now_us = SysTick->VAL; //获取当前滴答定时器内的计数值
+    if(now_us < pre_us)//正常情况，，，？
+    {
+        Ts = pre_us - now_us;
+    }
+    else
+    {
+        Ts = 168000 - now_us + pre_us;
+    }
+    if(Ts == 0)
+    {
+        Ts = 168000;
+    }
+
+    angle_c =  angle;
+    vel = (angle_c - angle_pre)/Ts;
+
+    angle_pre = angle_c;
+    pre_us = now_us;
+
+    return vel;
+}
+
+/**
+ * @brief       计算角度值
+ * @param       none
+ * @retval      角度值
+ */
+float getVel_iic4(float angle)
+{
+    unsigned long now_us,pre_us;
+    float Ts, angle_c,angle_pre, vel;//Ts：间隔时间
+
+    now_us = SysTick->VAL; //获取当前滴答定时器内的计数值
+    if(now_us < pre_us)//正常情况，，，？
+    {
+        Ts = pre_us - now_us;
+    }
+    else
+    {
+        Ts = 168000 - now_us + pre_us;
+    }
+    if(Ts == 0)
+    {
+        Ts = 168000;
+    }
+
+    angle_c =  angle;
+    vel = (angle_c - angle_pre)/Ts;
+
+    angle_pre = angle_c;
+    pre_us = now_us;
+
+    return vel;
+}

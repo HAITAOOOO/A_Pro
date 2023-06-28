@@ -1,0 +1,143 @@
+#include "pwm_bsp.h"
+#include "tim.h"
+
+uint16_t arr;
+uint16_t ccr;
+
+/**
+  * @brief          PWM初始化
+  * @param[in]     	none
+  * @retval         none
+  */
+//例:PWM_init(&htim4);
+void PWM_init(TIM_HandleTypeDef *htim)
+{
+    if(htim==&htim4)
+    {
+        HAL_TIM_Base_Start(&htim4);
+        HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
+        TIM4->CCR1=0;
+        HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
+        TIM4->CCR2=0;
+        HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
+        TIM4->CCR3=0;
+        HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_4);
+        TIM4->CCR4=0;
+    }
+    if(htim==&htim5)
+    {
+        HAL_TIM_Base_Start(&htim5);
+        HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_1);
+        TIM5->CCR1=0;
+        HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_2);
+        TIM5->CCR2=0;
+        HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_3);
+        TIM5->CCR3=0;
+        HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_4);
+        TIM5->CCR4=0;
+    }
+    if(htim==&htim2)
+    {
+        HAL_TIM_Base_Start(&htim2);
+        HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+        TIM2->CCR1=0;
+        HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
+        TIM2->CCR2=0;
+        HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
+        TIM2->CCR3=0;
+        HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
+        TIM2->CCR4=0;
+    }
+    if(htim==&htim4)
+    {
+        HAL_TIM_Base_Start(&htim8);
+        HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_1);
+        TIM8->CCR1=0;
+        HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_2);
+        TIM8->CCR2=0;
+        HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_3);
+        TIM8->CCR3=0;
+        HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_4);
+        TIM8->CCR4=0;
+    }
+}
+/**
+  * @brief          修改周期和占空比
+  * @param[in]     	channel:通道号 A-H S-Z
+	* @param[in]     	period:期望周期
+	* @param[in]     	duty：占空比
+  * @retval         none
+  */
+//例:PWM_Servo(A,0.02,0.5);
+void PWM_Servo(uint8_t channel,float period,float duty)
+{
+    arr = 1000000*period;//不建议改psc，如需修改记得改1000，TIM8-168MHz,其余84MHz
+    ccr = duty*arr;
+    switch(channel)
+    {
+    case A:
+        __HAL_TIM_SetAutoreload(&htim5, arr);
+        __HAL_TIM_SetCompare(&htim5, TIM_CHANNEL_4,ccr);
+        break;
+    case B:
+        __HAL_TIM_SetAutoreload(&htim5, arr);
+        __HAL_TIM_SetCompare(&htim5, TIM_CHANNEL_3,ccr);
+        break;
+    case C:
+        __HAL_TIM_SetAutoreload(&htim5, arr);
+        __HAL_TIM_SetCompare(&htim5, TIM_CHANNEL_2,ccr);
+        break;
+    case D:
+        __HAL_TIM_SetAutoreload(&htim5, arr);
+        __HAL_TIM_SetCompare(&htim5, TIM_CHANNEL_1,ccr);
+        break;
+    case E:
+        __HAL_TIM_SetAutoreload(&htim4, arr);
+        __HAL_TIM_SetCompare(&htim4, TIM_CHANNEL_4,ccr);
+        break;
+    case F:
+        __HAL_TIM_SetAutoreload(&htim4, arr);
+        __HAL_TIM_SetCompare(&htim4, TIM_CHANNEL_3,ccr);
+        break;
+    case G:
+        __HAL_TIM_SetAutoreload(&htim4, arr);
+        __HAL_TIM_SetCompare(&htim4, TIM_CHANNEL_2,ccr);
+        break;
+    case H:
+        __HAL_TIM_SetAutoreload(&htim4, arr);
+        __HAL_TIM_SetCompare(&htim4, TIM_CHANNEL_1,ccr);
+        break;
+    case S:
+        __HAL_TIM_SetAutoreload(&htim2, arr);
+        __HAL_TIM_SetCompare(&htim2, TIM_CHANNEL_1,ccr);
+        break;
+    case T:
+        __HAL_TIM_SetAutoreload(&htim2, arr);
+        __HAL_TIM_SetCompare(&htim2, TIM_CHANNEL_2,ccr);
+        break;
+    case U:
+        __HAL_TIM_SetAutoreload(&htim2, arr);
+        __HAL_TIM_SetCompare(&htim2, TIM_CHANNEL_2,ccr);
+        break;
+    case V:
+        __HAL_TIM_SetAutoreload(&htim2, arr);
+        __HAL_TIM_SetCompare(&htim2, TIM_CHANNEL_2,ccr);
+        break;
+    case W:
+        __HAL_TIM_SetAutoreload(&htim8, arr);
+        __HAL_TIM_SetCompare(&htim8, TIM_CHANNEL_1,ccr);
+        break;
+    case X:
+        __HAL_TIM_SetAutoreload(&htim8, arr);
+        __HAL_TIM_SetCompare(&htim8, TIM_CHANNEL_2,ccr);
+        break;
+    case Y:
+        __HAL_TIM_SetAutoreload(&htim8, arr);
+        __HAL_TIM_SetCompare(&htim8, TIM_CHANNEL_3,ccr);
+        break;
+    case Z:
+        __HAL_TIM_SetAutoreload(&htim8, arr);
+        __HAL_TIM_SetCompare(&htim8, TIM_CHANNEL_4,ccr);
+        break;
+    }
+}
