@@ -16,7 +16,7 @@ uint8_t  usart_tx_buf[200];
 * @retval         none
 */	
 //例：print("variable_1:%d\n",0212);
-void print(UART_HandleTypeDef*huart,const char *fmt,...)
+void print(const char *fmt,...)
 {
     static uint8_t tx_buf[256] = {0};
     static va_list ap;
@@ -26,7 +26,7 @@ void print(UART_HandleTypeDef*huart,const char *fmt,...)
     //返回字符串长度
     len = vsprintf((char *)tx_buf, fmt, ap);
     va_end(ap);
-    HAL_UART_Transmit(huart,tx_buf,len,100);
+    HAL_UART_Transmit(&huart3,tx_buf,len,100);
 }
 
 /**

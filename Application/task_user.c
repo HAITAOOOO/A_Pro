@@ -9,6 +9,8 @@
 #include "as5600.h"
 #include "buzzer_bsp.h"
 #include "led_bsp.h"
+#include "jy61p.h"
+#include "iic_bsp.h"
 
 #define START_TASK_PRIO 1
 #define START_STK_SIZE 256
@@ -74,51 +76,54 @@ void AS5600_INIT_TASK(void *param)
  */
 float Axle_radius = 288.175f; // mm 286.175f
 float yaw_err = 0, turnover_err = 0;
+jy61p jy61p_offset, jy61p_read;
 void TEST_TASK(void *param)
 {
     // int16_t launch_flag=0;
     //		int16_t fetch_flag= 0; //转动标志位
     //    int16_t run_flag=0;
-    long double rpm_now = 0;
-    int16_t direction = forward;
+    // long double rpm_now = 0;
+    // int16_t direction = forward;
+    iic1_init();
+    read_offset(&jy61p_offset);
     for (;;)
     {
         // 放测试代码
-
-        if (bt.key_0 == 1)
-        {
-            direction = left;
-            rpm_now = Trape(2500.0, 0.5, 0.5, 1.3);
-        }
-        else if (bt.key_1 == 1)
-        {
-            direction = right;
-            rpm_now = Trape(2500.0, 0.5, 0.5, 1.3);
-        }
-        else if (bt.key_0 == 0 && bt.key_1 == 0)
-        {
-            begin_flag = 0;
-            direction = forward;
-            rpm_now = 0;
-        }
-        if (direction == forward)
-        {
-            CAN_Send_PID(-rpm_now, rpm_now, rpm_now, -rpm_now, can1_14_speed);
-        }
-        else if (direction == back)
-        {
-            CAN_Send_PID(rpm_now, -rpm_now, -rpm_now, rpm_now, can1_14_speed);
-        }
-        else if (direction == left)
-        {
-            CAN_Send_PID(-rpm_now, -rpm_now, rpm_now, rpm_now, can1_14_speed);
-        }
-        else if (direction == right)
-        {
-            CAN_Send_PID(rpm_now, rpm_now, -rpm_now, -rpm_now, can1_14_speed);
-        }
-        // printf("%Lf\n", rpm_now);
-        // printf("%d\n", direction);
+        read_angle(&jy61p_read, &jy61p_offset);
+        // if (bt.key_0 == 1)
+        // {
+        //     direction = left;
+        //     rpm_now = Trape(2500.0, 0.5, 0.5, 1.3);
+        // }
+        // else if (bt.key_1 == 1)
+        // {
+        //     direction = right;
+        //     rpm_now = Trape(2500.0, 0.5, 0.5, 1.3);
+        // }
+        // else if (bt.key_0 == 0 && bt.key_1 == 0)
+        // {
+        //     begin_flag = 0;
+        //     direction = forward;
+        //     rpm_now = 0;
+        // }
+        // if (direction == forward)
+        // {
+        //     CAN_Send_PID(-rpm_now, rpm_now, rpm_now, -rpm_now, can1_14_speed);
+        // }
+        // else if (direction == back)
+        // {
+        //     CAN_Send_PID(rpm_now, -rpm_now, -rpm_now, rpm_now, can1_14_speed);
+        // }
+        // else if (direction == left)
+        // {
+        //     CAN_Send_PID(-rpm_now, -rpm_now, rpm_now, rpm_now, can1_14_speed);
+        // }
+        // else if (direction == right)
+        // {
+        //     CAN_Send_PID(rpm_now, rpm_now, -rpm_now, -rpm_now, can1_14_speed);
+        // }
+        // printf("%d\n", 1);
+        // printf("%d\n", 2);
 
         //				if(rc_ctrl.sw1==MIDDLE&&rc_ctrl.sw2==MIDDLE&&run_flag==1)
         //				{
@@ -198,22 +203,22 @@ void TEST_TASK(void *param)
         //////			}
 
         /*姿态矫正*/
-        if (Power_on_record == 0) // 温漂矫正完成
-        {
-            LED_ON();
-            yaw_err = (yaw_start - imu.yaw);
-            if (yaw_err < 0)
-            {
-                yaw_err += 360;
-            }
-            // turnover_err = yaw_err*3.1415926f*Axle_radius/180.0f;//理论值
-            turnover_err = yaw_err * Axle_radius;
-        }
-        if (rc_ctrl.sw2 == MIDDLE && rc_ctrl.sw1 == DOWN)
-        {
-            PID_init(can1_14_pos);
-            CAN_Send_PID(turnover_err * 360.0f / 314.15926f, turnover_err * 360.0f / 314.15926f, turnover_err * 360.0f / 314.15926f, turnover_err * 360.0f / 314.15926f, can1_14_pos);
-        }
+        // if (Power_on_record == 0) // 温漂矫正完成
+        // {
+        //     LED_ON();
+        //     yaw_err = (yaw_start - imu.yaw);
+        //     if (yaw_err < 0)
+        //     {
+        //         yaw_err += 360;
+        //     }
+        //     // turnover_err = yaw_err*3.1415926f*Axle_radius/180.0f;//理论值
+        //     turnover_err = yaw_err * Axle_radius;
+        // }
+        // if (rc_ctrl.sw2 == MIDDLE && rc_ctrl.sw1 == DOWN)
+        // {
+        //     PID_init(can1_14_pos);
+        //     CAN_Send_PID(turnover_err * 360.0f / 314.15926f, turnover_err * 360.0f / 314.15926f, turnover_err * 360.0f / 314.15926f, turnover_err * 360.0f / 314.15926f, can1_14_pos);
+        // }
         ////        /*距离矫正*/
 
         //        if(rc_ctrl.sw2==MIDDLE&&rc_ctrl.sw1==UP)

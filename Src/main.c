@@ -41,6 +41,7 @@
 #include "delay_bsp.h"
 #include "as5600.h"
 #include "task_user.h"
+#include "jy61p.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -73,12 +74,14 @@ void MX_FREERTOS_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+
+
 /* USER CODE END 0 */
 
 /**
-  * @brief  The application entry point.
-  * @retval int
-  */
+ * @brief  The application entry point.
+ * @retval int
+ */
 int main(void)
 {
     /* USER CODE BEGIN 1 */
@@ -126,9 +129,11 @@ int main(void)
     //PID_init(can2_14_speed);
     //PID_init(can2_58_speed);
     PID_init(can1_14_speed);
-		BeginWarnBuzzer();
-		
-    startTast();//创建任务
+    PWM_init(&htim5);
+    BeginWarnBuzzer();
+    LED_ON();
+
+    startTast(); // 创建任务
     /* USER CODE END 2 */
 
     /* Call init function for freertos objects (in freertos.c) */

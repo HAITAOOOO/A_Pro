@@ -69,3 +69,4 @@ a_pro\main.o: ../Bsp/delay_bsp.h
 a_pro\main.o: ../Application/as5600.h
 a_pro\main.o: ../Application/task_user.h
 a_pro\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
+a_pro\main.o: ../Application/jy61p.h

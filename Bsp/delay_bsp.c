@@ -7,10 +7,21 @@
  */
 void delay_us_iic(uint32_t us)
 {
-    while(us!=0) {
+    while (us != 0)
+    {
         us--;
         __NOP();
     }
+}
+/**
+ * @brief jy61p 用于产生400KHzIIC信号所需要的延时
+ *
+ * @param count
+ */
+void Delay_jy61p(uint32_t count) // 用于产生400KHzIIC信号所需要的延时
+{
+    unsigned int uiCnt = count * 8;
+    while (uiCnt--);
 }
 
 /**
@@ -21,27 +32,28 @@ void delay_us_iic(uint32_t us)
 void delay_us(uint32_t us)
 {
     uint32_t ticks;
-    uint32_t told,tnow,reload,tcnt=0;
+    uint32_t told, tnow, reload, tcnt = 0;
 
-    reload = SysTick->LOAD;                     //获取重装载寄存器值
-    ticks = us * (SystemCoreClock / 1000000);  //计数时间值
-    told=SysTick->VAL;                          //获取当前数值寄存器值（开始时数值）
+    reload = SysTick->LOAD;                   // 获取重装载寄存器值
+    ticks = us * (SystemCoreClock / 1000000); // 计数时间值
+    told = SysTick->VAL;                      // 获取当前数值寄存器值（开始时数值）
 
-    while(1)
+    while (1)
     {
-        tnow=SysTick->VAL;          //获取当前数值寄存器值
-        if(tnow!=told)              //当前值不等于开始值说明已在计数
+        tnow = SysTick->VAL; // 获取当前数值寄存器值
+        if (tnow != told)    // 当前值不等于开始值说明已在计数
         {
 
-            if(tnow<told)             //当前值小于开始数值，说明未计到0
-                tcnt+=told-tnow;     //计数值=开始值-当前值
+            if (tnow < told)         // 当前值小于开始数值，说明未计到0
+                tcnt += told - tnow; // 计数值=开始值-当前值
 
-            else                  //当前值大于开始数值，说明已计到0并重新计数
-                tcnt+=reload-tnow+told;   //计数值=重装载值-当前值+开始值（已
-            //从开始值计到0）
+            else                              // 当前值大于开始数值，说明已计到0并重新计数
+                tcnt += reload - tnow + told; // 计数值=重装载值-当前值+开始值（已
+            // 从开始值计到0）
 
-            told=tnow;                //更新开始值
-            if(tcnt>=ticks)break;     //时间超过/等于要延迟的时间,则退出.
+            told = tnow; // 更新开始值
+            if (tcnt >= ticks)
+                break; // 时间超过/等于要延迟的时间,则退出.
         }
     }
 }
@@ -55,11 +67,11 @@ void delay_us_os(uint32_t nus)
 {
     uint32_t ticks;
     uint32_t told, tnow, tcnt = 0;
-    uint32_t reload = SysTick->LOAD;        /* LOAD的值 */
-    ticks = nus * 168;                 /* 需要的节拍数 */
-    vTaskSuspendAll();                    /* 阻止OS调度，防止打断us延时 */
+    uint32_t reload = SysTick->LOAD; /* LOAD的值 */
+    ticks = nus * 168;               /* 需要的节拍数 */
+    vTaskSuspendAll();               /* 阻止OS调度，防止打断us延时 */
 
-    told = SysTick->VAL;                    /* 刚进入时的计数器值 */
+    told = SysTick->VAL; /* 刚进入时的计数器值 */
     while (1)
     {
         tnow = SysTick->VAL;
@@ -67,7 +79,7 @@ void delay_us_os(uint32_t nus)
         {
             if (tnow < told)
             {
-                tcnt += told - tnow;        /* 这里注意一下SYSTICK是一个递减的计数器就可以了 */
+                tcnt += told - tnow; /* 这里注意一下SYSTICK是一个递减的计数器就可以了 */
             }
             else
             {
@@ -76,9 +88,9 @@ void delay_us_os(uint32_t nus)
             told = tnow;
             if (tcnt >= ticks)
             {
-                break;                      /* 时间超过/等于要延迟的时间,则退出 */
+                break; /* 时间超过/等于要延迟的时间,则退出 */
             }
         }
     }
-    xTaskResumeAll();                   /* 恢复OS调度 */
+    xTaskResumeAll(); /* 恢复OS调度 */
 }

@@ -1144,6 +1144,11 @@
               <FileType>1</FileType>
               <FilePath>..\Application\task_user.c</FilePath>
             </File>
+            <File>
+              <FileName>jy61p.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Application\jy61p.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

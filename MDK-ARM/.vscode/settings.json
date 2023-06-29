@@ -3,6 +3,7 @@
         "rc_bsp.h": "c",
         "chassis.h": "c",
         "task_user.h": "c",
-        "imu_bsp.h": "c"
+        "imu_bsp.h": "c",
+        "iic_bsp.h": "c"
     }
 }

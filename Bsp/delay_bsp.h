@@ -6,5 +6,6 @@
 void delay_us(uint32_t us);
 void delay_us_os(uint32_t nus);
 void delay_us_iic(uint32_t us);
+void Delay_jy61p(uint32_t count);
 
 #endif

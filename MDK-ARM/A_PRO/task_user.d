@@ -60,3 +60,5 @@ a_pro\task_user.o: ../Inc/usart.h
 a_pro\task_user.o: ../Bsp/imu_bsp.h
 a_pro\task_user.o: ../Bsp/buzzer_bsp.h
 a_pro\task_user.o: ../Bsp/led_bsp.h
+a_pro\task_user.o: ..\Application\jy61p.h
+a_pro\task_user.o: ../Bsp/iic_bsp.h
