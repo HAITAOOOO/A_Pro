@@ -1,40 +1,40 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file    usart.c
-  * @brief   This file provides code for the configuration
-  *          of the USART instances.
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2023 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file    usart.c
+ * @brief   This file provides code for the configuration
+ *          of the USART instances.
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2023 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
-volatile uint8_t rx_len_usart3=0;
-volatile uint8_t recv_end_flag_usart3=0;
+volatile uint8_t rx_len_usart3 = 0;
+volatile uint8_t recv_end_flag_usart3 = 0;
 uint8_t rx_buffer_usart3[200];
 
-volatile uint8_t rx_len_usart6=0;
-volatile uint8_t recv_end_flag_usart6=0;
+volatile uint8_t rx_len_usart6 = 0;
+volatile uint8_t recv_end_flag_usart6 = 0;
 uint8_t rx_buffer_usart6[200];
 
-volatile uint8_t rx_len_usart7=0;
-volatile uint8_t recv_end_flag_usart7=0;
+volatile uint8_t rx_len_usart7 = 0;
+volatile uint8_t recv_end_flag_usart7 = 0;
 uint8_t rx_buffer_usart7[200];
 
-volatile uint8_t rx_len_usart8=0;
-volatile uint8_t recv_end_flag_usart8=0;
+volatile uint8_t rx_len_usart8 = 0;
+volatile uint8_t recv_end_flag_usart8 = 0;
 uint8_t rx_buffer_usart8[200];
 /* USER CODE END 0 */
 
@@ -73,12 +73,11 @@ void MX_UART7_Init(void)
         Error_Handler();
     }
     /* USER CODE BEGIN UART7_Init 2 */
-    __HAL_UART_ENABLE_IT(&huart7, UART_IT_RXNE); //使能IDLE中断
-    __HAL_UART_ENABLE_IT(&huart7, UART_IT_IDLE); //使能IDLE中断
+    __HAL_UART_ENABLE_IT(&huart7, UART_IT_RXNE); // 使能IDLE中断
+    __HAL_UART_ENABLE_IT(&huart7, UART_IT_IDLE); // 使能IDLE中断
 
-    HAL_UART_Receive_DMA(&huart7,rx_buffer_usart7,BUFFER_SIZE);//打开DMA接收，数据存入rx_buffer_usart7数组中�??
+    HAL_UART_Receive_DMA(&huart7, rx_buffer_usart7, BUFFER_SIZE); // 打开DMA接收，数据存入rx_buffer_usart7数组中�??
     /* USER CODE END UART7_Init 2 */
-
 }
 /* UART8 init function */
 void MX_UART8_Init(void)
@@ -104,12 +103,11 @@ void MX_UART8_Init(void)
         Error_Handler();
     }
     /* USER CODE BEGIN UART8_Init 2 */
-    __HAL_UART_ENABLE_IT(&huart8, UART_IT_RXNE); //使能IDLE中断
-    __HAL_UART_ENABLE_IT(&huart8, UART_IT_IDLE); //使能IDLE中断
+    __HAL_UART_ENABLE_IT(&huart8, UART_IT_RXNE); // 使能IDLE中断
+    __HAL_UART_ENABLE_IT(&huart8, UART_IT_IDLE); // 使能IDLE中断
 
-    HAL_UART_Receive_DMA(&huart8,rx_buffer_usart8,BUFFER_SIZE);//打开DMA接收，数据存入rx_buffer_usart8数组中�??
+    HAL_UART_Receive_DMA(&huart8, rx_buffer_usart8, BUFFER_SIZE); // 打开DMA接收，数据存入rx_buffer_usart8数组中�??
     /* USER CODE END UART8_Init 2 */
-
 }
 /* USART1 init function */
 
@@ -138,7 +136,6 @@ void MX_USART1_UART_Init(void)
     /* USER CODE BEGIN USART1_Init 2 */
 
     /* USER CODE END USART1_Init 2 */
-
 }
 /* USART3 init function */
 
@@ -165,12 +162,11 @@ void MX_USART3_UART_Init(void)
         Error_Handler();
     }
     /* USER CODE BEGIN USART3_Init 2 */
-    __HAL_UART_ENABLE_IT(&huart3, UART_IT_RXNE); //使能IDLE中断
-    __HAL_UART_ENABLE_IT(&huart3, UART_IT_IDLE); //使能IDLE中断
+    __HAL_UART_ENABLE_IT(&huart3, UART_IT_RXNE); // 使能IDLE中断
+    __HAL_UART_ENABLE_IT(&huart3, UART_IT_IDLE); // 使能IDLE中断
 
-    HAL_UART_Receive_DMA(&huart3,rx_buffer_usart3,BUFFER_SIZE);//打开DMA接收，数据存入rx_buffer_usart8数组中㿿
+    // HAL_UART_Receive_DMA(&huart3,rx_buffer_usart3,BUFFER_SIZE);//打开DMA接收，数据存入rx_buffer_usart8数组中㿿
     /* USER CODE END USART3_Init 2 */
-
 }
 /* USART6 init function */
 
@@ -197,19 +193,18 @@ void MX_USART6_UART_Init(void)
         Error_Handler();
     }
     /* USER CODE BEGIN USART6_Init 2 */
-    __HAL_UART_ENABLE_IT(&huart6, UART_IT_RXNE); //使能IDLE中断
-    __HAL_UART_ENABLE_IT(&huart6, UART_IT_IDLE); //使能IDLE中断
+    __HAL_UART_ENABLE_IT(&huart6, UART_IT_RXNE); // 使能IDLE中断
+    __HAL_UART_ENABLE_IT(&huart6, UART_IT_IDLE); // 使能IDLE中断
 
-    HAL_UART_Receive_DMA(&huart6,rx_buffer_usart6,BUFFER_SIZE);//打开DMA接收，数据存入rx_buffer_usart6数组中�??
+    HAL_UART_Receive_DMA(&huart6, rx_buffer_usart6, BUFFER_SIZE); // 打开DMA接收，数据存入rx_buffer_usart6数组中�??
     /* USER CODE END USART6_Init 2 */
-
 }
 
-void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
+void HAL_UART_MspInit(UART_HandleTypeDef *uartHandle)
 {
 
     GPIO_InitTypeDef GPIO_InitStruct = {0};
-    if(uartHandle->Instance==UART7)
+    if (uartHandle->Instance == UART7)
     {
         /* USER CODE BEGIN UART7_MspInit 0 */
 
@@ -222,7 +217,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
         PE8     ------> UART7_TX
         PE7     ------> UART7_RX
         */
-        GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_7;
+        GPIO_InitStruct.Pin = GPIO_PIN_8 | GPIO_PIN_7;
         GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
         GPIO_InitStruct.Pull = GPIO_NOPULL;
         GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
@@ -246,7 +241,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
             Error_Handler();
         }
 
-        __HAL_LINKDMA(uartHandle,hdmarx,hdma_uart7_rx);
+        __HAL_LINKDMA(uartHandle, hdmarx, hdma_uart7_rx);
 
         /* UART7 interrupt Init */
         HAL_NVIC_SetPriority(UART7_IRQn, 5, 0);
@@ -255,7 +250,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
 
         /* USER CODE END UART7_MspInit 1 */
     }
-    else if(uartHandle->Instance==UART8)
+    else if (uartHandle->Instance == UART8)
     {
         /* USER CODE BEGIN UART8_MspInit 0 */
 
@@ -268,7 +263,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
         PE1     ------> UART8_TX
         PE0     ------> UART8_RX
         */
-        GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_0;
+        GPIO_InitStruct.Pin = GPIO_PIN_1 | GPIO_PIN_0;
         GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
         GPIO_InitStruct.Pull = GPIO_NOPULL;
         GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
@@ -292,7 +287,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
             Error_Handler();
         }
 
-        __HAL_LINKDMA(uartHandle,hdmarx,hdma_uart8_rx);
+        __HAL_LINKDMA(uartHandle, hdmarx, hdma_uart8_rx);
 
         /* UART8 interrupt Init */
         HAL_NVIC_SetPriority(UART8_IRQn, 5, 0);
@@ -301,7 +296,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
 
         /* USER CODE END UART8_MspInit 1 */
     }
-    else if(uartHandle->Instance==USART1)
+    else if (uartHandle->Instance == USART1)
     {
         /* USER CODE BEGIN USART1_MspInit 0 */
 
@@ -314,7 +309,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
         PB7     ------> USART1_RX
         PB6     ------> USART1_TX
         */
-        GPIO_InitStruct.Pin = GPIO_PIN_7|GPIO_PIN_6;
+        GPIO_InitStruct.Pin = GPIO_PIN_7 | GPIO_PIN_6;
         GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
         GPIO_InitStruct.Pull = GPIO_NOPULL;
         GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
@@ -338,7 +333,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
             Error_Handler();
         }
 
-        __HAL_LINKDMA(uartHandle,hdmarx,hdma_usart1_rx);
+        __HAL_LINKDMA(uartHandle, hdmarx, hdma_usart1_rx);
 
         /* USART1 interrupt Init */
         HAL_NVIC_SetPriority(USART1_IRQn, 5, 0);
@@ -347,7 +342,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
 
         /* USER CODE END USART1_MspInit 1 */
     }
-    else if(uartHandle->Instance==USART3)
+    else if (uartHandle->Instance == USART3)
     {
         /* USER CODE BEGIN USART3_MspInit 0 */
 
@@ -360,7 +355,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
         PD9     ------> USART3_RX
         PD8     ------> USART3_TX
         */
-        GPIO_InitStruct.Pin = GPIO_PIN_9|GPIO_PIN_8;
+        GPIO_InitStruct.Pin = GPIO_PIN_9 | GPIO_PIN_8;
         GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
         GPIO_InitStruct.Pull = GPIO_NOPULL;
         GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
@@ -384,7 +379,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
             Error_Handler();
         }
 
-        __HAL_LINKDMA(uartHandle,hdmarx,hdma_usart3_rx);
+        __HAL_LINKDMA(uartHandle, hdmarx, hdma_usart3_rx);
 
         /* USART3 interrupt Init */
         HAL_NVIC_SetPriority(USART3_IRQn, 5, 0);
@@ -393,7 +388,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
 
         /* USER CODE END USART3_MspInit 1 */
     }
-    else if(uartHandle->Instance==USART6)
+    else if (uartHandle->Instance == USART6)
     {
         /* USER CODE BEGIN USART6_MspInit 0 */
 
@@ -406,7 +401,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
         PG14     ------> USART6_TX
         PG9     ------> USART6_RX
         */
-        GPIO_InitStruct.Pin = GPIO_PIN_14|GPIO_PIN_9;
+        GPIO_InitStruct.Pin = GPIO_PIN_14 | GPIO_PIN_9;
         GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
         GPIO_InitStruct.Pull = GPIO_NOPULL;
         GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
@@ -430,7 +425,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
             Error_Handler();
         }
 
-        __HAL_LINKDMA(uartHandle,hdmarx,hdma_usart6_rx);
+        __HAL_LINKDMA(uartHandle, hdmarx, hdma_usart6_rx);
 
         /* USART6 interrupt Init */
         HAL_NVIC_SetPriority(USART6_IRQn, 5, 0);
@@ -441,10 +436,10 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     }
 }
 
-void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
+void HAL_UART_MspDeInit(UART_HandleTypeDef *uartHandle)
 {
 
-    if(uartHandle->Instance==UART7)
+    if (uartHandle->Instance == UART7)
     {
         /* USER CODE BEGIN UART7_MspDeInit 0 */
 
@@ -456,7 +451,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
         PE8     ------> UART7_TX
         PE7     ------> UART7_RX
         */
-        HAL_GPIO_DeInit(GPIOE, GPIO_PIN_8|GPIO_PIN_7);
+        HAL_GPIO_DeInit(GPIOE, GPIO_PIN_8 | GPIO_PIN_7);
 
         /* UART7 DMA DeInit */
         HAL_DMA_DeInit(uartHandle->hdmarx);
@@ -467,7 +462,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 
         /* USER CODE END UART7_MspDeInit 1 */
     }
-    else if(uartHandle->Instance==UART8)
+    else if (uartHandle->Instance == UART8)
     {
         /* USER CODE BEGIN UART8_MspDeInit 0 */
 
@@ -479,7 +474,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
         PE1     ------> UART8_TX
         PE0     ------> UART8_RX
         */
-        HAL_GPIO_DeInit(GPIOE, GPIO_PIN_1|GPIO_PIN_0);
+        HAL_GPIO_DeInit(GPIOE, GPIO_PIN_1 | GPIO_PIN_0);
 
         /* UART8 DMA DeInit */
         HAL_DMA_DeInit(uartHandle->hdmarx);
@@ -490,7 +485,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 
         /* USER CODE END UART8_MspDeInit 1 */
     }
-    else if(uartHandle->Instance==USART1)
+    else if (uartHandle->Instance == USART1)
     {
         /* USER CODE BEGIN USART1_MspDeInit 0 */
 
@@ -502,7 +497,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
         PB7     ------> USART1_RX
         PB6     ------> USART1_TX
         */
-        HAL_GPIO_DeInit(GPIOB, GPIO_PIN_7|GPIO_PIN_6);
+        HAL_GPIO_DeInit(GPIOB, GPIO_PIN_7 | GPIO_PIN_6);
 
         /* USART1 DMA DeInit */
         HAL_DMA_DeInit(uartHandle->hdmarx);
@@ -513,7 +508,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 
         /* USER CODE END USART1_MspDeInit 1 */
     }
-    else if(uartHandle->Instance==USART3)
+    else if (uartHandle->Instance == USART3)
     {
         /* USER CODE BEGIN USART3_MspDeInit 0 */
 
@@ -525,7 +520,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
         PD9     ------> USART3_RX
         PD8     ------> USART3_TX
         */
-        HAL_GPIO_DeInit(GPIOD, GPIO_PIN_9|GPIO_PIN_8);
+        HAL_GPIO_DeInit(GPIOD, GPIO_PIN_9 | GPIO_PIN_8);
 
         /* USART3 DMA DeInit */
         HAL_DMA_DeInit(uartHandle->hdmarx);
@@ -536,7 +531,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 
         /* USER CODE END USART3_MspDeInit 1 */
     }
-    else if(uartHandle->Instance==USART6)
+    else if (uartHandle->Instance == USART6)
     {
         /* USER CODE BEGIN USART6_MspDeInit 0 */
 
@@ -548,7 +543,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
         PG14     ------> USART6_TX
         PG9     ------> USART6_RX
         */
-        HAL_GPIO_DeInit(GPIOG, GPIO_PIN_14|GPIO_PIN_9);
+        HAL_GPIO_DeInit(GPIOG, GPIO_PIN_14 | GPIO_PIN_9);
 
         /* USART6 DMA DeInit */
         HAL_DMA_DeInit(uartHandle->hdmarx);

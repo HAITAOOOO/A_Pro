@@ -84,12 +84,12 @@ void TEST_TASK(void *param)
     //    int16_t run_flag=0;
     // long double rpm_now = 0;
     // int16_t direction = forward;
-    iic1_init();
-    read_offset(&jy61p_offset);
+    // iic1_init();
+    // read_offset(&jy61p_offset);
     for (;;)
     {
         // 放测试代码
-        read_angle(&jy61p_read, &jy61p_offset);
+        // read_angle(&jy61p_read, &jy61p_offset);
         // if (bt.key_0 == 1)
         // {
         //     direction = left;

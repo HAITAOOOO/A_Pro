@@ -1,6 +1,10 @@
 a_pro\jy61p.o: ..\Application\jy61p.c
 a_pro\jy61p.o: ..\Application\jy61p.h
-a_pro\jy61p.o: ../Bsp/iic_bsp.h
+a_pro\jy61p.o: ..\Application\wit_c_sdk.h
+a_pro\jy61p.o: D:\InPrg\ProPrg\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
+a_pro\jy61p.o: D:\InPrg\ProPrg\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
+a_pro\jy61p.o: D:\InPrg\ProPrg\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\string.h
+a_pro\jy61p.o: ..\Application\REG.h
 a_pro\jy61p.o: ../Inc/main.h
 a_pro\jy61p.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 a_pro\jy61p.o: ../Inc/stm32f4xx_hal_conf.h
@@ -9,7 +13,6 @@ a_pro\jy61p.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h
 a_pro\jy61p.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 a_pro\jy61p.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f427xx.h
 a_pro\jy61p.o: ../Drivers/CMSIS/Include/core_cm4.h
-a_pro\jy61p.o: D:\InPrg\ProPrg\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
 a_pro\jy61p.o: ../Drivers/CMSIS/Include/cmsis_version.h
 a_pro\jy61p.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 a_pro\jy61p.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
@@ -35,3 +38,4 @@ a_pro\jy61p.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h
 a_pro\jy61p.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 a_pro\jy61p.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 a_pro\jy61p.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+a_pro\jy61p.o: ../Inc/usart.h

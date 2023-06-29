@@ -1149,6 +1149,16 @@
               <FileType>1</FileType>
               <FilePath>..\Application\jy61p.c</FilePath>
             </File>
+            <File>
+              <FileName>REG.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Application\REG.h</FilePath>
+            </File>
+            <File>
+              <FileName>wit_c_sdk.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Application\wit_c_sdk.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -45,6 +45,7 @@
 "a_pro\as5600.o"
 "a_pro\task_user.o"
 "a_pro\jy61p.o"
+"a_pro\wit_c_sdk.o"
 "a_pro\croutine.o"
 "a_pro\event_groups.o"
 "a_pro\list.o"
