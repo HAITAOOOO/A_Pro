@@ -37,4 +37,5 @@ a_pro\stm32f4xx_it.o: ../Inc/stm32f4xx_it.h
 a_pro\stm32f4xx_it.o: ../Inc/usart.h
 a_pro\stm32f4xx_it.o: ../Bsp/usart_bsp.h
 a_pro\stm32f4xx_it.o: D:\InPrg\ProPrg\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
+a_pro\stm32f4xx_it.o: ../Bsp/pid_bsp.h
 a_pro\stm32f4xx_it.o: ../Bsp/rc_bsp.h

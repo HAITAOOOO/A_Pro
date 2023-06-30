@@ -61,10 +61,10 @@ a_pro\main.o: ../Bsp/can_bsp.h
 a_pro\main.o: ../Bsp/rc_bsp.h
 a_pro\main.o: ../Bsp/usart_bsp.h
 a_pro\main.o: D:\InPrg\ProPrg\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
+a_pro\main.o: ../Bsp/pid_bsp.h
 a_pro\main.o: ../Bsp/iic_bsp.h
 a_pro\main.o: ../Bsp/imu_bsp.h
 a_pro\main.o: ../Application/chassis.h
-a_pro\main.o: ../Bsp/pid_bsp.h
 a_pro\main.o: ../Bsp/delay_bsp.h
 a_pro\main.o: ../Application/as5600.h
 a_pro\main.o: ../Application/task_user.h

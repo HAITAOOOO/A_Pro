@@ -2,6 +2,7 @@
 #include <stdarg.h>
 #include "struct_typedef.h"
 
+
 double yaw_usart6, x_usart6, y_usart6;
 int info_usart3;
 int info_usart7;
@@ -28,7 +29,7 @@ void print(const char *fmt, ...)
     // 返回字符串长度
     len = vsprintf((char *)tx_buf, fmt, ap);
     va_end(ap);
-    HAL_UART_Transmit(&huart3, tx_buf, len, 100);
+    HAL_UART_Transmit(&huart6, tx_buf, len, 100);
 }
 
 /**
@@ -125,34 +126,34 @@ void yaw_decoding()
 }
 /*读取jy61p角度 波特率9600*/
 int16_t angle_offset = 0;
-void read_angle(void)
+void jy61p_read(void)
 {
     if (0X51 == rx_buffer_usart3[1])
     {
-        ax = (float)((float)((rx_buffer_usart3[3] << 8) | rx_buffer_usart3[2]) / 32768.0 * 16 * 9.8);
-        ay = (float)((float)((rx_buffer_usart3[5] << 8) | rx_buffer_usart3[4]) / 32768.0 * 16 * 9.8);
-        az = (float)((float)((rx_buffer_usart3[7] << 8) | rx_buffer_usart3[6]) / 32768.0 * 16 * 9.8);
+        ax = (float)((float)((rx_buffer_usart3[3] << 8) | rx_buffer_usart3[2]) / 32768.0f * 16.0f * 9.8f);
+        ay = (float)((float)((rx_buffer_usart3[5] << 8) | rx_buffer_usart3[4]) / 32768.0f * 16.0f * 9.8f);
+        az = (float)((float)((rx_buffer_usart3[7] << 8) | rx_buffer_usart3[6]) / 32768.0f * 16.0f * 9.8f);
     }
     if (0X52 == rx_buffer_usart3[12])
     {
-        wx = (float)(((rx_buffer_usart3[14] << 8) | rx_buffer_usart3[13]) / 32768.0 * 2000);
-        wy = (float)(((rx_buffer_usart3[16] << 8) | rx_buffer_usart3[15]) / 32768.0 * 2000);
-        wz = (float)(((rx_buffer_usart3[18] << 8) | rx_buffer_usart3[17]) / 32768.0 * 2000);
+        wx = (float)(((rx_buffer_usart3[14] << 8) | rx_buffer_usart3[13]) / 32768.0f * 2000.0f);
+        wy = (float)(((rx_buffer_usart3[16] << 8) | rx_buffer_usart3[15]) / 32768.0f * 2000.0f);
+        wz = (float)(((rx_buffer_usart3[18] << 8) | rx_buffer_usart3[17]) / 32768.0f * 2000.0f);
     }
     if (0X53 == rx_buffer_usart3[23])
     {
         if (angle_offset == 0)
         {
-            roll_offset = (float)(((((short)rx_buffer_usart3[25]) << 8) | rx_buffer_usart3[24]) / 32768.0 * 180);
-            pitch_offset = (float)(((((short)rx_buffer_usart3[27]) << 8) | rx_buffer_usart3[26]) / 32768.0 * 180);
-            yaw_offset = (float)(((((short)rx_buffer_usart3[29]) << 8) | rx_buffer_usart3[28]) / 32768.0 * 180);
+            roll_offset = (float)(((((short)rx_buffer_usart3[25]) << 8) | rx_buffer_usart3[24]) / 32768.0f * 180.0f);
+            pitch_offset = (float)(((((short)rx_buffer_usart3[27]) << 8) | rx_buffer_usart3[26]) / 32768.0f * 180.0f);
+            yaw_offset = (float)(((((short)rx_buffer_usart3[29]) << 8) | rx_buffer_usart3[28]) / 32768.0f * 180.0f);
             angle_offset = 1;
         }
         else
         {
-            roll = (float)(((((short)rx_buffer_usart3[25]) << 8) | rx_buffer_usart3[24]) / 32768.0 * 180) - roll_offset;
-            pitch = (float)(((((short)rx_buffer_usart3[27]) << 8) | rx_buffer_usart3[26]) / 32768.0 * 180) - pitch_offset;
-            yaw = (float)(((((short)rx_buffer_usart3[29]) << 8) | rx_buffer_usart3[28]) / 32768.0 * 180) - yaw_offset;
+            roll = (float)(((((short)rx_buffer_usart3[25]) << 8) | rx_buffer_usart3[24]) / 32768.0f * 180.0f) - roll_offset;
+            pitch = (float)(((((short)rx_buffer_usart3[27]) << 8) | rx_buffer_usart3[26]) / 32768.0f * 180.0f) - pitch_offset;
+            yaw = (float)(((((short)rx_buffer_usart3[29]) << 8) | rx_buffer_usart3[28]) / 32768.0f * 180.0f) - yaw_offset;
 
             if (roll >= 180)
             {
@@ -168,4 +169,88 @@ void read_angle(void)
             }
         }
     }
+}
+
+/*
+ * 解析出rx_buffer_usart6中的数据
+ * 返回解析得到的数据
+ */
+float Get_Data(void)
+{
+    uint8_t data_Start_Num = 0; // 记录数据位开始的地方
+    uint8_t data_End_Num = 0; // 记录数据位结束的地方
+    uint8_t data_Num = 0; // 记录数据位数
+    uint8_t minus_Flag = 0; // 判断是不是负数
+    float data_return = 0; // 解析得到的数据
+    for(uint8_t i=0; i<200; i++) // 查找等号和感叹号的位置
+    {
+        if(rx_buffer_usart6[i] == '=') data_Start_Num = i + 1; // +1是直接定位到数据起始位
+        if(rx_buffer_usart6[i] == '!')
+        {
+            data_End_Num = i - 1;
+            break;
+        }
+    }
+    if(rx_buffer_usart6[data_Start_Num] == '-') // 如果是负数
+    {
+        data_Start_Num += 1; // 后移一位到数据位
+        minus_Flag = 1; // 负数flag
+    }
+    data_Num = data_End_Num - data_Start_Num + 1;
+    if(data_Num == 4) // 数据共4位
+    {
+        data_return = (rx_buffer_usart6[data_Start_Num]-'0')  + (rx_buffer_usart6[data_Start_Num+2]-'0')*0.1f +
+                      (rx_buffer_usart6[data_Start_Num+3]-'0')*0.01f;
+    }
+    else if(data_Num == 5) // 数据共5位
+    {
+        data_return = (rx_buffer_usart6[data_Start_Num]-'0')*10 + (rx_buffer_usart6[data_Start_Num+1]-'0') + (rx_buffer_usart6[data_Start_Num+3]-'0')*0.1f +
+                      (rx_buffer_usart6[data_Start_Num+4]-'0')*0.01f;
+    }
+    else if(data_Num == 6) // 数据共6位
+    {
+        data_return = (rx_buffer_usart6[data_Start_Num]-'0')*100 + (rx_buffer_usart6[data_Start_Num+1]-'0')*10+ (rx_buffer_usart6[data_Start_Num+2]-'0') +
+                      (rx_buffer_usart6[data_Start_Num+4]-'0')*0.1f + (rx_buffer_usart6[data_Start_Num+5]-'0')*0.01f;
+    }
+    if(minus_Flag == 1)  data_return = -data_return;
+    return data_return;
+}
+
+void adjust_pid_usart(caspid_TypeDef * caspid)
+{
+    float data_Get = Get_Data();
+
+    if(rx_buffer_usart6[0]=='P' && rx_buffer_usart6[1]=='1') // 位置环P
+    {
+        caspid->pos.kp = data_Get;
+    }
+    else if(rx_buffer_usart6[0]=='I' && rx_buffer_usart6[1]=='1')// 位置环I
+    {
+        caspid->pos.ki = data_Get;
+    }
+    else if(rx_buffer_usart6[0]=='D' && rx_buffer_usart6[1]=='1')	// 位置环D
+    {
+        caspid->pos.kd = data_Get;
+    }
+    else if(rx_buffer_usart6[0]=='P' && rx_buffer_usart6[1]=='2')// 速度环P
+    {
+        caspid->speed.kp = data_Get;
+    }
+    else if(rx_buffer_usart6[0]=='I' && rx_buffer_usart6[1]=='2') // 速度环I
+    {
+        caspid->speed.ki = data_Get;
+    }
+    else if(rx_buffer_usart6[0]=='D' && rx_buffer_usart6[1]=='2')// 速度环D
+    {
+        caspid->speed.kd = data_Get;
+    }
+    else if((rx_buffer_usart6[0]=='S' && rx_buffer_usart6[1]=='p') && rx_buffer_usart6[2]=='e')//目标速度
+    {
+        caspid->speed.target = data_Get;
+    }
+    else if((rx_buffer_usart6[0]=='P' && rx_buffer_usart6[1]=='o') && rx_buffer_usart6[2]=='s')//目标位置
+    {
+        caspid->pos.target = data_Get;
+    }
+
 }

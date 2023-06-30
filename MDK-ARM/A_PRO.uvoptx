@@ -263,27 +263,22 @@
         <Ww>
           <count>19</count>
           <WinNumber>1</WinNumber>
-          <ItemText>jy61p_offset,0x0A</ItemText>
+          <ItemText>rx_buffer_usart3</ItemText>
         </Ww>
         <Ww>
           <count>20</count>
           <WinNumber>1</WinNumber>
-          <ItemText>rx_buffer_usart3</ItemText>
+          <ItemText>rx_buffer_usart6</ItemText>
         </Ww>
         <Ww>
           <count>21</count>
           <WinNumber>1</WinNumber>
-          <ItemText>rollx</ItemText>
+          <ItemText>motor_pid1</ItemText>
         </Ww>
         <Ww>
           <count>22</count>
           <WinNumber>1</WinNumber>
-          <ItemText>pitchy</ItemText>
-        </Ww>
-        <Ww>
-          <count>23</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>yawz</ItemText>
+          <ItemText>motor_pid1_speed</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>

@@ -6,9 +6,10 @@
 #include "cmsis_os.h"
 #include "led_bsp.h"
 
-PID_TypeDef motor_pid1_speed[8], motor_pid1_pos[8];
-PID_TypeDef motor_pid2_speed[8], motor_pid2_pos[8];
-PID_TypeDef motor_pid_6020_speed[7], motor_pid_6020_pos[7];
+caspid_TypeDef motor_pid1[8];
+caspid_TypeDef motor_pid2[8];
+caspid_TypeDef motor_pid_6020[7];
+
 FuzzyPID motor_fuzzypid1[8];
 
 int32_t set_target1[4] = {1};
@@ -48,117 +49,83 @@ void PID_init(uint16_t type)
     switch (type)
     {
     case can1_14_speed:
-        //        for (int i = 0; i < 4; i++)
-        //        {
-        //            pid_init(&motor_pid1_speed[i]);
-        //            motor_pid1_speed[i].f_param_init(&motor_pid1_speed[i],0,0, 16383,5000,3.0,0.05,0.27); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
-        //        }
-
-        pid_init(&motor_pid1_speed[0]);
-        motor_pid1_speed[0].f_param_init(&motor_pid1_speed[0], 0, 0, 16383, 5000, 3, 0, 0.27);
-        pid_init(&motor_pid1_speed[1]);
-        motor_pid1_speed[1].f_param_init(&motor_pid1_speed[1], 0, 0, 16383, 5000, 3, 0, 0.27);
-        pid_init(&motor_pid1_speed[2]);
-        motor_pid1_speed[2].f_param_init(&motor_pid1_speed[2], 0, 0, 16383, 5000, 3, 0, 0.27);
-        pid_init(&motor_pid1_speed[3]);
-        motor_pid1_speed[3].f_param_init(&motor_pid1_speed[3], 0, 0, 16383, 5000, 3, 0, 0.27);
+        for (int i = 0; i < 4; i++)
+        {
+            pid_init(&motor_pid1[i].speed);
+            motor_pid1[i].speed.f_param_init(&motor_pid1[i].speed,0,0, 16383,5000,3.0,0.05,0.27); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
+        }
         break;
     case can1_14_pos:
-        //        for (int i = 0; i < 4; i++)
-        //        {
-        //            pid_init(&motor_pid1_speed[i]);
-        //            motor_pid1_speed[i].f_param_init(&motor_pid1_speed[i],0,0, 16000,5000,3,0.05,0.27); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
-        //            pid_init(&motor_pid1_pos[i]);
-        //            motor_pid1_pos[i].f_param_init(&motor_pid1_pos[i],0,0, 16000,1000,4,0.0,25);
-        //        }
-        pid_init(&motor_pid1_speed[0]);
-        motor_pid1_speed[0].f_param_init(&motor_pid1_speed[0], 0, 0, 16383, 5000, 0.5, 0.0, 0);
-        pid_init(&motor_pid1_speed[1]);
-        motor_pid1_speed[1].f_param_init(&motor_pid1_speed[1], 0, 0, 16383, 5000, 0.5, 0.0, 0);
-        pid_init(&motor_pid1_speed[2]);
-        motor_pid1_speed[2].f_param_init(&motor_pid1_speed[2], 0, 0, 16383, 5000, 0.5, 0.0, 0);
-        pid_init(&motor_pid1_speed[3]);
-        motor_pid1_speed[3].f_param_init(&motor_pid1_speed[3], 0, 0, 16383, 5000, 0.5, 0.0, 0);
-
-        pid_init(&motor_pid1_pos[0]);
-        motor_pid1_pos[0].f_param_init(&motor_pid1_pos[0], 0, 0, 16383, 5000, 0.5, 0.0, 0);
-        pid_init(&motor_pid1_pos[1]);
-        motor_pid1_pos[1].f_param_init(&motor_pid1_pos[1], 0, 0, 16383, 5000, 0.5, 0.0, 0);
-        pid_init(&motor_pid1_pos[2]);
-        motor_pid1_pos[2].f_param_init(&motor_pid1_pos[2], 0, 0, 16383, 5000, 0.5, 0.0, 0);
-        pid_init(&motor_pid1_pos[3]);
-        motor_pid1_pos[3].f_param_init(&motor_pid1_pos[3], 0, 0, 16383, 5000, 0.5, 0.0, 0);
+        for (int i = 0; i < 4; i++)
+        {
+            pid_init(&motor_pid1[i].speed);
+            motor_pid1[i].speed.f_param_init(&motor_pid1[i].speed,0,0, 16000,5000,3,0.05,0.27); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
+            pid_init(&motor_pid1[i].pos);
+            motor_pid1[i].pos.f_param_init(&motor_pid1[i].pos,0,0, 16000,1000,4,0.0,25);
+        }
         break;
     case can1_58_speed:
         for (int i = 4; i < 8; i++)
         {
-            pid_init(&motor_pid1_speed[i]);
-            motor_pid1_speed[i].f_param_init(&motor_pid1_speed[i], 10, 0, 16383, 5000, 3.0, 0.05, 0.27); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
+            pid_init(&motor_pid1[i].speed);
+            motor_pid1[i].speed.f_param_init(&motor_pid1[i].speed, 10, 0, 16383, 5000, 3.0, 0.05, 0.27); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
         }
-        //        pid_init(&motor_pid1_speed[4]);
-        //        motor_pid1_speed[4].f_param_init(&motor_pid1_speed[4],10,0, 16383,5000,1,0,0); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
-        //        pid_init(&motor_pid1_speed[5]);
-        //        motor_pid1_speed[5].f_param_init(&motor_pid1_speed[5],10,0, 16383,5000,1,0,0);
-        //        pid_init(&motor_pid1_speed[6]);
-        //        motor_pid1_speed[6].f_param_init(&motor_pid1_speed[6],10,0, 16383,5000,0,0,0);
-        //        pid_init(&motor_pid1_speed[7]);
-        //        motor_pid1_speed[7].f_param_init(&motor_pid1_speed[7],10,0, 16383,5000,0,0,0);
         break;
     case can1_58_pos:
         for (int i = 4; i < 8; i++)
         {
-            pid_init(&motor_pid1_speed[i]);
-            motor_pid1_speed[i].f_param_init(&motor_pid1_speed[i], 10, 0, 16383, 5000, 3.0, 0, 0.27); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
-            pid_init(&motor_pid1_pos[i]);
-            motor_pid1_pos[i].f_param_init(&motor_pid1_pos[i], 10, 0, 16383, 5000, 1.0, 0.0, 0.0);
+            pid_init(&motor_pid1[i].speed);
+            motor_pid1[i].speed.f_param_init(&motor_pid1[i].speed,0,0, 16000,5000,3,0.05,0.27); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
+            pid_init(&motor_pid1[i].pos);
+            motor_pid1[i].pos.f_param_init(&motor_pid1[i].pos,0,0, 16000,1000,0,0.0,0);
         }
         break;
     case can2_14_speed:
         for (int i = 0; i < 4; i++)
         {
-            pid_init(&motor_pid2_speed[i]);
-            motor_pid2_speed[i].f_param_init(&motor_pid2_speed[i], 10, 0, 16383, 5000, 3.0, 0.05, 0.27); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
+            pid_init(&motor_pid2[i].speed);
+            motor_pid2[i].speed.f_param_init(&motor_pid2[i].speed, 10, 0, 16383, 5000, 3.0, 0.05, 0.27); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
         }
         break;
     case can2_14_pos:
         for (int i = 0; i < 4; i++)
         {
-            pid_init(&motor_pid2_speed[i]);
-            motor_pid2_speed[i].f_param_init(&motor_pid2_speed[i], 0, 0, 16383, 1000, 3.0, 0.05, 0.27); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
-            pid_init(&motor_pid2_pos[i]);
-            motor_pid2_pos[i].f_param_init(&motor_pid2_pos[i], 0, 0, 16383, 5000, 5, 0, 15); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
+            pid_init(&motor_pid2[i].speed);
+            motor_pid2[i].speed.f_param_init(&motor_pid2[i].speed,0,0, 16000,5000,0,0,0); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
+            pid_init(&motor_pid2[i].pos);
+            motor_pid2[i].pos.f_param_init(&motor_pid2[i].pos,0,0, 16000,1000,0,0,0);
         }
         break;
     case can2_58_speed:
         for (int i = 4; i < 8; i++)
         {
-            pid_init(&motor_pid2_speed[i]);
-            motor_pid2_speed[i].f_param_init(&motor_pid2_speed[i], 0, 0, 16383, 5000, 3.0, 0.05, 0.27); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
+            pid_init(&motor_pid2[i].speed);
+            motor_pid2[i].speed.f_param_init(&motor_pid2[i].speed,0,0, 16000,5000,0,0,0); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
         }
         break;
     case can2_58_pos:
         for (int i = 4; i < 8; i++)
         {
-            pid_init(&motor_pid2_speed[i]);
-            motor_pid2_speed[i].f_param_init(&motor_pid2_speed[i], 10, 0, 16383, 5000, 3.0, 0.05, 0.27); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
-            pid_init(&motor_pid2_pos[i]);
-            motor_pid2_pos[i].f_param_init(&motor_pid2_pos[i], 10, 0, 16383, 5000, 10, 0.0, 0); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
+            pid_init(&motor_pid2[i].speed);
+            motor_pid2[i].speed.f_param_init(&motor_pid2[i].speed,0,0, 16000,5000,0,0,0); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
+            pid_init(&motor_pid2[i].pos);
+            motor_pid2[i].pos.f_param_init(&motor_pid2[i].pos,0,0, 16000,1000,0,0.0,0);
         }
         break;
     case can1_6020_speed:
         for (int i = 4; i < 7; i++)
         {
-            pid_init(&motor_pid_6020_speed[i]);
-            motor_pid_6020_speed[i].f_param_init(&motor_pid_6020_speed[i], 10, 0, 30000, 30000, 500, 0, 0); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
+            pid_init(&motor_pid_6020[i].speed);
+            motor_pid_6020[i].speed.f_param_init(&motor_pid_6020[i].speed, 10, 0, 30000, 30000, 500, 0, 0); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
         }
         break;
     case can1_6020_pos:
         for (int i = 4; i < 7; i++)
         {
-            pid_init(&motor_pid_6020_speed[i]);
-            motor_pid_6020_speed[i].f_param_init(&motor_pid_6020_speed[i], 0, 0, 30000, 2000, 30.0, 0, 0); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
-            pid_init(&motor_pid_6020_pos[i]);
-            motor_pid_6020_pos[i].f_param_init(&motor_pid_6020_pos[i], 0, 0, 360, 10, 20, 0, 0); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
+            pid_init(&motor_pid_6020[i].speed);
+            motor_pid_6020[i].speed.f_param_init(&motor_pid_6020[i].speed, 10, 0, 30000, 30000, 500, 0, 0); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
+            pid_init(&motor_pid_6020[i].pos);
+            motor_pid_6020[i].pos.f_param_init(&motor_pid_6020[i].pos, 0, 0, 360, 10, 20, 0, 0); // 结构体 死区 初始期望 输出限幅 积分限幅 kp ki kd
         }
         break;
     default:
@@ -190,87 +157,87 @@ void CAN_Send_PID(int16_t motor1, int16_t motor2, int16_t motor3, int16_t motor4
     {
         for (int i = 0; i < 4; i++)
         {
-            motor_pid1_speed[i].f_cal_pid(&motor_pid1_speed[i], can1_motor_message[i].speed_rpm, set_target1[i]); // 根据期望值进行PID计算(电流环)  speed_rpm(当前速度)由反馈报文提供
+            motor_pid1[i].speed.f_cal_pid(&motor_pid1[i].speed, can1_motor_message[i].speed_rpm, set_target1[i]); // 根据期望值进行PID计算(电流环)  speed_rpm(当前速度)由反馈报文提供
         }
-        CAN1_Send1(motor_pid1_speed[0].output, motor_pid1_speed[1].output, motor_pid1_speed[2].output, motor_pid1_speed[3].output);
+        CAN1_Send1(motor_pid1[0].speed.output, motor_pid1[1].speed.output, motor_pid1[2].speed.output, motor_pid1[3].speed.output);
     }
     if (type == can1_14_pos)
     {
         for (int i = 0; i < 4; i++)
         {
             // pid_reset(&motor_pid1_speed[i],3+fuzzy(&motor_pid1_speed[i]),0.0,0.27);
-            test_ecd[i] = can1_motor_message[i].real_ecd - omni_wheel_info[i].stop_ecd;
-            motor_pid1_speed[i].f_cal_pid(&motor_pid1_speed[i], can1_motor_message[i].speed_rpm, motor_pid1_pos[i].f_cal_pid(&motor_pid1_pos[i], can1_motor_message[i].real_ecd - omni_wheel_info[i].stop_ecd, set_target1[i]));
+            //test_ecd[i] = can1_motor_message[i].real_ecd - omni_wheel_info[i].stop_ecd;
+            motor_pid1[i].speed.f_cal_pid(&motor_pid1[i].speed, can1_motor_message[i].speed_rpm, motor_pid1[i].pos.f_cal_pid(&motor_pid1[i].pos, can1_motor_message[i].real_ecd - omni_wheel_info[i].stop_ecd, set_target1[i]));
         }
-        CAN1_Send1(motor_pid1_speed[0].output, motor_pid1_speed[1].output, motor_pid1_speed[2].output, motor_pid1_speed[3].output);
+        CAN1_Send1(motor_pid1[0].speed.output, motor_pid1[1].speed.output, motor_pid1[2].speed.output, motor_pid1[3].speed.output);
     }
 
     if (type == can1_58_speed)
     {
         for (int i = 4; i < 8; i++)
         {
-            motor_pid1_speed[i].f_cal_pid(&motor_pid1_speed[i], can1_motor_message[i].speed_rpm, set_target1[i - 4]); // 根据期望值进行PID计算(电流环)  speed_rpm(当前速度)由反馈报文提供
+            motor_pid1[i].speed.f_cal_pid(&motor_pid1[i].speed, can1_motor_message[i].speed_rpm, set_target1[i - 4]); // 根据期望值进行PID计算(电流环)  speed_rpm(当前速度)由反馈报文提供
         }
-        CAN1_Send2(motor_pid1_speed[4].output, motor_pid1_speed[5].output, motor_pid1_speed[6].output, motor_pid1_speed[7].output);
+        CAN1_Send2(motor_pid1[4].speed.output, motor_pid1[5].speed.output, motor_pid1[6].speed.output, motor_pid1[7].speed.output);
     }
     if (type == can1_58_pos)
     {
         for (int i = 4; i < 8; i++)
         {
-            motor_pid1_speed[i].f_cal_pid(&motor_pid1_speed[i], can1_motor_message[i].speed_rpm, motor_pid1_pos[i].f_cal_pid(&motor_pid1_pos[i], can1_motor_message[i].real_ecd, set_target1[i - 4]));
+            motor_pid1[i].speed.f_cal_pid(&motor_pid1[i].speed, can1_motor_message[i].speed_rpm, motor_pid1[i].pos.f_cal_pid(&motor_pid1[i].pos, can1_motor_message[i].real_ecd, set_target1[i - 4]));
         }
-        CAN1_Send2(motor_pid1_speed[4].output, motor_pid1_speed[5].output, motor_pid1_speed[6].output, motor_pid1_speed[7].output);
+        CAN1_Send2(motor_pid1[4].speed.output, motor_pid1[5].speed.output, motor_pid1[6].speed.output, motor_pid1[7].speed.output);
     }
 
     if (type == can2_14_speed)
     {
         for (int i = 0; i < 4; i++)
         {
-            motor_pid2_speed[i].f_cal_pid(&motor_pid2_speed[i], can2_motor_message[i].speed_rpm, set_target2[i]); // 根据期望值进行PID计算  speed_rpm(当前速度)由反馈报文提供
+            motor_pid2[i].speed.f_cal_pid(&motor_pid2[i].speed, can2_motor_message[i].speed_rpm, set_target2[i]); // 根据期望值进行PID计算  speed_rpm(当前速度)由反馈报文提供
         }
-        CAN2_Send1(motor_pid2_speed[0].output, motor_pid2_speed[1].output, motor_pid2_speed[2].output, motor_pid2_speed[3].output);
+        CAN2_Send1(motor_pid2[0].speed.output,motor_pid2[1].speed.output,motor_pid2[2].speed.output,motor_pid2[3].speed.output);
     }
     if (type == can2_14_pos)
     {
         for (int i = 0; i < 4; i++)
         {
-            motor_pid2_speed[i].f_cal_pid(&motor_pid2_speed[i], can2_motor_message[i].speed_rpm, motor_pid2_pos[i].f_cal_pid(&motor_pid2_pos[i], can2_motor_message[i].real_ecd, set_target2[i]));
+            motor_pid2[i].speed.f_cal_pid(&motor_pid2[i].speed, can2_motor_message[i].speed_rpm, motor_pid2[i].pos.f_cal_pid(&motor_pid2[i].pos, can2_motor_message[i].real_ecd, set_target2[i]));
         }
-        CAN2_Send1(motor_pid2_speed[0].output, motor_pid2_speed[1].output, motor_pid2_speed[2].output, motor_pid2_speed[3].output);
+        CAN2_Send1(motor_pid2[0].speed.output, motor_pid2[1].speed.output, motor_pid2[2].speed.output, motor_pid2[3].speed.output);
     }
 
     if (type == can2_58_speed)
     {
         for (int i = 4; i < 8; i++)
         {
-            motor_pid2_speed[i].f_cal_pid(&motor_pid2_speed[i], can2_motor_message[i].speed_rpm, set_target2[i - 4]); // 根据期望值进行PID计算  speed_rpm(当前速度)由反馈报文提供
+            motor_pid2[i].speed.f_cal_pid(&motor_pid2[i].speed, can2_motor_message[i].speed_rpm, set_target2[i-4]); // 根据期望值进行PID计算  speed_rpm(当前速度)由反馈报文提供
         }
-        CAN2_Send2(motor_pid2_speed[4].output, motor_pid2_speed[5].output, motor_pid2_speed[6].output, motor_pid2_speed[7].output);
+        CAN2_Send2(motor_pid2[4].speed.output, motor_pid2[5].speed.output,motor_pid2[6].speed.output,motor_pid2[7].speed.output);
     }
     if (type == can2_58_pos)
     {
         for (int i = 4; i < 8; i++)
         {
-            motor_pid2_speed[i].f_cal_pid(&motor_pid2_speed[i], can2_motor_message[i].speed_rpm, motor_pid2_pos[i].f_cal_pid(&motor_pid2_pos[i], can2_motor_message[i].real_ecd, set_target2[i - 4]));
+            motor_pid2[i].speed.f_cal_pid(&motor_pid2[i].speed, can2_motor_message[i].speed_rpm, motor_pid2[i].pos.f_cal_pid(&motor_pid2[i].pos, can2_motor_message[i].real_ecd, set_target2[i - 4]));
         }
-        CAN2_Send2(motor_pid2_speed[4].output, motor_pid2_speed[5].output, motor_pid2_speed[6].output, motor_pid2_speed[7].output);
+        CAN2_Send2(motor_pid2[4].speed.output,motor_pid2[5].speed.output, motor_pid2[6].speed.output, motor_pid2[7].speed.output);
     }
 
     if (type == can1_6020_speed)
     {
         for (int i = 4; i < 7; i++)
         {
-            motor_pid_6020_speed[i].f_cal_pid(&motor_pid_6020_speed[i], can_motor_message_6020[i].rotor_speed, set_target2[i - 4]); // 根据期望值进行PID计算  speed_rpm(当前速度)由反馈报文提供
+            motor_pid_6020[i].speed.f_cal_pid(&motor_pid_6020[i].speed, can_motor_message_6020[i].rotor_speed, set_target2[i - 4]); // 根据期望值进行PID计算  speed_rpm(当前速度)由反馈报文提供
         }
-        CAN_Send_6020(motor_pid_6020_speed[4].output, motor_pid_6020_speed[5].output, motor_pid_6020_speed[6].output);
+        CAN_Send_6020(motor_pid_6020[4].speed.output,motor_pid_6020[5].speed.output, motor_pid_6020[6].speed.output);
     }
     if (type == can1_6020_pos)
     {
         for (int i = 4; i < 7; i++)
         {
-            motor_pid_6020_speed[i].f_cal_pid(&motor_pid_6020_speed[i], can_motor_message_6020[i].rotor_speed, motor_pid_6020_speed[i].f_cal_pid(&motor_pid_6020_pos[i], can_motor_message_6020[i].real_ecd, set_target2[i - 4]));
+            motor_pid_6020[i].speed.f_cal_pid(&motor_pid_6020[i].speed, can_motor_message_6020[i].rotor_speed, motor_pid_6020[i].pos.f_cal_pid(&motor_pid_6020[i].pos, can_motor_message_6020[i].real_ecd, set_target2[i - 4]));
         }
-        CAN_Send_6020(motor_pid_6020_speed[4].output, motor_pid_6020_speed[5].output, motor_pid_6020_speed[6].output);
+        CAN_Send_6020(motor_pid_6020[4].speed.output, motor_pid_6020[5].speed.output, motor_pid_6020[6].speed.output);
     }
     osDelay(10);
     // HAL_Delay(10); // 频率100HZ,必须有阻塞，不然报文无法读取
@@ -298,7 +265,7 @@ void omni_wheel_t(int16_t x_earth, int16_t y_earth, int16_t w, double yaw)
 {
     // yaw为大地坐标和车坐标的夹角
     double lf, rf, lb, rb; // 左前 右前 左后 右后
-                           // int16_t x_robot,y_robot;
+    // int16_t x_robot,y_robot;
     //     x_earth=-x_earth;
     //     y_earth=-y_earth;	//视安装方向更改
     //     x_robot= x_earth*cos(yaw)+y_earth*sin(yaw);

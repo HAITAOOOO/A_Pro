@@ -39,6 +39,11 @@ typedef struct _PID_TypeDef
     float (*f_cal_pid)(struct _PID_TypeDef *pid, float measure,float target);   //pid计算
 } PID_TypeDef;
 
+//串级pid
+typedef struct{
+	PID_TypeDef speed;
+	PID_TypeDef pos;
+}caspid_TypeDef;
 
 /*****************模糊pid部分******************/
 typedef struct

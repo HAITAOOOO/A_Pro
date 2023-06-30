@@ -383,7 +383,7 @@ void USART3_IRQHandler(void)
             rx_buffer_usart3[i] = 0;
         }
     }
-    read_angle();
+    jy61p_read();
     // Laser_decoding();//婵€鍏夋暟鎹В鐮?
     /* USER CODE END USART3_IRQn 1 */
 }
@@ -491,8 +491,8 @@ void USART6_IRQHandler(void)
             rx_buffer_usart6[i] = 0;
         }
     }
-    buletooth(&bt);
-
+    //buletooth(&bt);
+		Get_Data();
     /* USER CODE END USART6_IRQn 1 */
 }
 
