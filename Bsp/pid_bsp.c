@@ -25,8 +25,8 @@ static void pid_param_init(
     pid->kp = kp;
     pid->ki = ki;
     pid->kd = kd;
-		
-		pid->iout = 0;	//将上一次累计值清零
+
+    pid->iout = 0;	//将上一次累计值清零
     pid->output = 0;
 }
 
@@ -36,7 +36,7 @@ void pid_reset(PID_TypeDef * pid, float kp, float ki, float kd)
     pid->kp = kp;
     pid->ki = ki;
     pid->kd = kd;
-		pid->iout = 0;//将上一次累计值清零
+    pid->iout = 0;//将上一次累计值清零
 }
 
 /*-----------------pid计算---------------------------*/

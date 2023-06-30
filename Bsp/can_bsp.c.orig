@@ -54,7 +54,7 @@ moto_info_t can_motor_message_6020[7];      		    //存储can上对应6020返回
 	(ptr)->last_ecd = (ptr)->ecd;																					\
 	(ptr)->total_angle = (ptr)->round_cnt * 8192 + ((ptr)->ecd - (ptr)->offset_angle);	\
   (ptr)->real_ecd = (ptr)->total_angle * 360.0f/36/8192 ;          	  			\
-}																				/*2006:360/360=10  3508:360/19=18.94737 也可在pid计算时修改*/ 
+}																				/*2006:360/360=10  3508:360/19=18.94737 也可在pid计算时修改*/
 
 /**
   * @brief          解码函数（3508），将data解码到ptr 宏定义执行速度快于函数
@@ -80,14 +80,14 @@ moto_info_t can_motor_message_6020[7];      		    //存储can上对应6020返回
 	(ptr)->last_ecd = (ptr)->ecd;																					\
 	(ptr)->total_angle = (ptr)->round_cnt * 8192 + ((ptr)->ecd - (ptr)->offset_angle);	\
   (ptr)->real_ecd = (ptr)->total_angle * 360.0f/19.0f/8192.0f ;          	  			\
-}																				/*2006:360/360=10  3508:360/19=18.94737 也可在pid计算时修改*/ 
+}																				/*2006:360/360=10  3508:360/19=18.94737 也可在pid计算时修改*/
 
-	/**
-  * @brief          解码函数（2006），将data解码到ptr 宏定义执行速度快于函数
-  * @param[in]      ptr:数组首地址
-	* @param[in]      data:数据
-  * @retval         none
-  */
+/**
+* @brief          解码函数（2006），将data解码到ptr 宏定义执行速度快于函数
+* @param[in]      ptr:数组首地址
+* @param[in]      data:数据
+* @retval         none
+*/
 #define get_motor_measure_2006(ptr, data)/* “ \ ” 为续行符，表示下面一行是紧接着当前行，\后不可含有任何符号，包括空格和空行，此处必须使用 */    	\
 {                                                                 		  \
   (ptr)->ecd = (uint16_t)((data)[0] << 8 | (data)[1]); /*转子机械角度*/ \
@@ -106,8 +106,8 @@ moto_info_t can_motor_message_6020[7];      		    //存储can上对应6020返回
 	(ptr)->last_ecd = (ptr)->ecd;																					\
 	(ptr)->total_angle = (ptr)->round_cnt * 8192 + ((ptr)->ecd - (ptr)->offset_angle);	\
   (ptr)->real_ecd = (ptr)->total_angle * 10.0f/8192.0f ;          	  			\
-}			
-	
+}
+
 /**
   * @brief          解码函数（6020），将data解码到ptr 宏定义执行速度快于函数
   * @param[in]      ptr:数组首地址
@@ -135,7 +135,7 @@ moto_info_t can_motor_message_6020[7];      		    //存储can上对应6020返回
 }
 
 /**
-  * @brief          hal库CAN回调函数,接收电机数据 (RR专供)
+  * @brief          hal库CAN回调函数,接收电机数据 (RR ID专供)
   * @param[in]      hcan:CAN句柄指针
   * @retval         none
   */
@@ -146,29 +146,26 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
     uint8_t rx_data[8];
     //找到can总线上返回信息rx_data
     HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rx_header, rx_data);
-	
-	if(hcan==&hcan1)
-	{
-		if(rx_header.StdId==0x201||rx_header.StdId==0x202||rx_header.StdId==0x203||rx_header.StdId==0x204||rx_header.StdId==0x205)//3508 RR底盘 翻环 
-		{
-			i = rx_header.StdId - 0x201;
-			get_motor_measure_3508(&can1_motor_message[i], rx_data);
-		}
-	}
-	if(hcan==&hcan2)
-	{
-		if(rx_header.StdId==0x205||rx_header.StdId==0x206||rx_header.StdId==0x207||rx_header.StdId==0x208) //3508 RR发射
-		{
-			i = rx_header.StdId - 0x201;
-			get_motor_measure_3508(&can2_motor_message[i], rx_data);
-		}
-		else if(rx_header.StdId==0x201)//RR 2006 夹环
-		{
-			i = rx_header.StdId - 0x201;
-			get_motor_measure_2006(&can2_motor_message[i], rx_data);
-		}
-	}
-		
+
+    if(hcan==&hcan1)
+    {
+        if(rx_header.StdId==0x201||rx_header.StdId==0x202||rx_header.StdId==0x203||rx_header.StdId==0x204||rx_header.StdId==0x205)//3508 RR底盘 翻环
+        {
+            i = rx_header.StdId - 0x201;
+            get_motor_measure_3508(&can1_motor_message[i], rx_data);
+        }
+    }
+    if(hcan==&hcan2)
+    {
+        if(rx_header.StdId==0x205||rx_header.StdId==0x206||rx_header.StdId==0x207||rx_header.StdId==0x208||rx_header.StdId==0x201||rx_header.StdId==0x202) //3508 RR发射 夹环取环
+					
+        {
+            i = rx_header.StdId - 0x201;
+						get_motor_measure_3508(&can2_motor_message[i], rx_data);
+						//get_motor_measure_2006(&can2_motor_message[i], rx_data);
+        }
+    }
+
 //    if(rx_header.StdId==0x209||rx_header.StdId==0x20A||rx_header.StdId==0x20B)//处理6020（只适用于以0x2FF为控制报文的后三个ID）
 //    {
 //        //get motor id

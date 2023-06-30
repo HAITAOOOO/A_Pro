@@ -158,11 +158,11 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
     if(hcan==&hcan2)
     {
         if(rx_header.StdId==0x205||rx_header.StdId==0x206||rx_header.StdId==0x207||rx_header.StdId==0x208||rx_header.StdId==0x201||rx_header.StdId==0x202) //3508 RR发射 夹环取环
-					
+
         {
             i = rx_header.StdId - 0x201;
-						get_motor_measure_3508(&can2_motor_message[i], rx_data);
-						//get_motor_measure_2006(&can2_motor_message[i], rx_data);
+            get_motor_measure_3508(&can2_motor_message[i], rx_data);
+            //get_motor_measure_2006(&can2_motor_message[i], rx_data);
         }
     }
 

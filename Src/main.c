@@ -41,7 +41,6 @@
 #include "delay_bsp.h"
 #include "as5600.h"
 #include "task_user.h"
-#include "jy61p.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

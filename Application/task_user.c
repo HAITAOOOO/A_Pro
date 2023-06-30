@@ -9,7 +9,6 @@
 #include "as5600.h"
 #include "buzzer_bsp.h"
 #include "led_bsp.h"
-#include "jy61p.h"
 #include "iic_bsp.h"
 
 #define START_TASK_PRIO 1

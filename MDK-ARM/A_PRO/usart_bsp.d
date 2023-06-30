@@ -37,3 +37,4 @@ a_pro\usart_bsp.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 a_pro\usart_bsp.o: D:\InPrg\ProPrg\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
 a_pro\usart_bsp.o: ../Inc/usart.h
 a_pro\usart_bsp.o: D:\InPrg\ProPrg\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdarg.h
+a_pro\usart_bsp.o: ..\Bsp\struct_typedef.h

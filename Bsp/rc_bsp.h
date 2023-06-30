@@ -47,19 +47,19 @@ typedef __packed struct
     uint8_t sw2;
 } RC;
 
-typedef struct{
-	int16_t romte_x;
-	int16_t romte_y;
-	int16_t key_0;
-	int16_t key_1;
-	int16_t key_2;
-	int16_t key_3;
-	int16_t key_4;
-	int16_t key_5;
-	int16_t turn_left;
-	int16_t turn_right;
-	int16_t turn_speed;
-}BT_RC;
+typedef struct {
+    int16_t romte_x;
+    int16_t romte_y;
+    int16_t key_0;
+    int16_t key_1;
+    int16_t key_2;
+    int16_t key_3;
+    int16_t key_4;
+    int16_t key_5;
+    int16_t turn_left;
+    int16_t turn_right;
+    int16_t turn_speed;
+} BT_RC;
 
 extern BT_RC bt;
 extern RC rc_ctrl;
