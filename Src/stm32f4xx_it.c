@@ -25,7 +25,6 @@
 #include "usart.h"
 #include "usart_bsp.h"
 #include "rc_bsp.h"
-#include "wit_c_sdk.h"
 //#include "WIT_C_SDK.h"
 /* USER CODE END Includes */
 
@@ -358,42 +357,33 @@ void USART1_IRQHandler(void)
 void USART3_IRQHandler(void)
 {
   /* USER CODE BEGIN USART3_IRQn 0 */
-  // uint32_t tmp_flag = 0;
-  // uint32_t temp;
-  // tmp_flag =__HAL_UART_GET_FLAG(&huart3,UART_FLAG_IDLE); //鑾峰彇IDLE鏍囧織浣?
-  // if((tmp_flag != RESET))//idle鏍囧織琚疆�??
-  // {
-  //     __HAL_UART_CLEAR_IDLEFLAG(&huart3);//娓呴櫎鏍囧織�??
-  //     temp = huart3.Instance->SR;  //娓呴櫎鐘舵€佸瘎瀛樺櫒SR,璇诲彇SR瀵勫瓨鍣ㄥ彲浠ュ疄鐜版竻闄R瀵勫瓨鍣ㄧ殑鍔熻�?
-  //     temp = huart3.Instance->DR; //璇诲彇鏁版嵁瀵勫瓨鍣ㄤ腑鐨勬暟鎹?
-  //     HAL_UART_DMAStop(&huart3); //
-  //     temp  = hdma_uart7_rx.Instance->NDTR;// 鑾峰彇DMA涓湭浼犺緭鐨勬暟鎹釜鏁帮紝NDTR瀵勫瓨鍣ㄥ垎鏋愯涓嬮潰
-  //     rx_len_usart7 =  BUFFER_SIZE - temp; //鎬昏鏁板噺鍘绘湭浼犺緭鐨勬暟鎹釜鏁帮紝寰�?埌宸茬粡鎺ユ敹鐨勬暟鎹釜鏁?
-  //     recv_end_flag_usart7 = 1;	// 鎺ュ彈�?�屾垚鏍囧織浣嶇�?1
-  // }
-  unsigned char ucTemp;
-  uint32_t tmp_flag = 0;
-  tmp_flag = __HAL_UART_GET_FLAG(&huart3, UART_FLAG_RXNE);
-  if (tmp_flag != RESET)
-  {
-    ucTemp = HAL_UART_Receive_IT(&huart3, &ucTemp, sizeof(ucTemp));
-    WitSerialDataIn(ucTemp);
-    
-  }
+   uint32_t tmp_flag = 0;
+   uint32_t temp;
+   tmp_flag =__HAL_UART_GET_FLAG(&huart3,UART_FLAG_IDLE); //鑾峰彇IDLE鏍囧織浣?
+   if((tmp_flag != RESET))//idle鏍囧織琚疆�??
+   {
+      __HAL_UART_CLEAR_IDLEFLAG(&huart3);//娓呴櫎鏍囧織�??
+       temp = huart3.Instance->SR;  //娓呴櫎鐘舵€佸瘎瀛樺櫒SR,璇诲彇SR瀵勫瓨鍣ㄥ彲浠ュ疄鐜版竻闄R瀵勫瓨鍣ㄧ殑鍔熻�?
+       temp = huart3.Instance->DR; //璇诲彇鏁版嵁瀵勫瓨鍣ㄤ腑鐨勬暟鎹?
+      HAL_UART_DMAStop(&huart3); //
+       temp  = hdma_usart3_rx.Instance->NDTR;// 鑾峰彇DMA涓湭浼犺緭鐨勬暟鎹釜鏁帮紝NDTR瀵勫瓨鍣ㄥ垎鏋愯涓嬮潰
+       rx_len_usart3 =  BUFFER_SIZE - temp; //鎬昏鏁板噺鍘绘湭浼犺緭鐨勬暟鎹釜鏁帮紝寰�?埌宸茬粡鎺ユ敹鐨勬暟鎹釜鏁?
+       recv_end_flag_usart3 = 1;	// 鎺ュ彈�?�屾垚鏍囧織浣嶇�?1
+   }
   /* USER CODE END USART3_IRQn 0 */
   HAL_UART_IRQHandler(&huart3);
   /* USER CODE BEGIN USART3_IRQn 1 */
-  // HAL_UART_Receive_DMA(&huart3,rx_buffer_usart3,BUFFER_SIZE);//閲嶆柊鎵撳紑DMA鎺ユ�?
-  // if(recv_end_flag_usart3 == 1)
-  // {
-  //     rx_len_usart3 = 0;
-  //     recv_end_flag_usart3 = 0;
-  //     for(uint8_t i=0; i<rx_len_usart3; i++)
-  //     {
-  //         rx_buffer_usart3[i] = 0;
-  //     }
-  // }
-
+   HAL_UART_Receive_DMA(&huart3,rx_buffer_usart3,BUFFER_SIZE);//閲嶆柊鎵撳紑DMA鎺ユ�?
+   if(recv_end_flag_usart3 == 1)
+   {
+       rx_len_usart3 = 0;
+       recv_end_flag_usart3 = 0;
+       for(uint8_t i=0; i<rx_len_usart3; i++)
+       {
+           rx_buffer_usart3[i] = 0;
+       }
+   }
+	read_angle();
   // Laser_decoding();//婵€鍏夋暟鎹В鐮?
   /* USER CODE END USART3_IRQn 1 */
 }

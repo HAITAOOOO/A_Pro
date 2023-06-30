@@ -76,7 +76,6 @@ void AS5600_INIT_TASK(void *param)
  */
 float Axle_radius = 288.175f; // mm 286.175f
 float yaw_err = 0, turnover_err = 0;
-jy61p jy61p_offset, jy61p_read;
 void TEST_TASK(void *param)
 {
     // int16_t launch_flag=0;

@@ -8,13 +8,14 @@ int info_usart8;
 
 uint8_t  usart_tx_buf[200];
 
+float rollx,pitchy,yawz,rollx_offset,pitchy_offset,yawz_offset;
 /**
 * @brief          串口发送
 * @param[in]      UART_HandleTypeDef*huart：串口句柄
 * @param[in]      const char *fmt：输出格式
 * @param[in]			...：输出内容
 * @retval         none
-*/	
+*/
 //例：print("variable_1:%d\n",0212);
 void print(const char *fmt,...)
 {
@@ -122,3 +123,26 @@ void yaw_decoding()
         }
     }
 }
+/*读取jy61p角度 波特率9600*/
+int16_t angle_offset=0;
+void read_angle(void)
+{
+    if(0X53 == rx_buffer_usart3[23])
+    {
+        if(angle_offset==0)
+        {
+            rollx_offset = (float)(((rx_buffer_usart3[25]<<8)|rx_buffer_usart3[24])/32768.0*180);
+            pitchy_offset = (float)(((rx_buffer_usart3[27]<<8)|rx_buffer_usart3[26])/32768.0*180);
+            yawz_offset = (float)(((rx_buffer_usart3[29]<<8)|rx_buffer_usart3[28])/32768.0*180);
+            angle_offset=1;
+        }
+        else
+        {
+            rollx = (float)(((rx_buffer_usart3[25]<<8)|rx_buffer_usart3[24])/32768.0*180)-rollx_offset;
+            pitchy = (float)(((rx_buffer_usart3[27]<<8)|rx_buffer_usart3[26])/32768.0*180)-pitchy_offset;
+            yawz = (float)(((rx_buffer_usart3[29]<<8)|rx_buffer_usart3[28])/32768.0*180)-yawz_offset;
+        }
+
+    }
+}
+

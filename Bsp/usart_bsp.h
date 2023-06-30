@@ -10,6 +10,7 @@
 void print(const char *fmt, ...); // usart3
 void Laser_decoding(void);
 void yaw_decoding(void);
+void read_angle(void);
 
 extern double info_usart6;
 extern int info_usart3;
